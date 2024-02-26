@@ -1,25 +1,44 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Player.gd" type="Script" id=2]
 [ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_walk2.png" type="Texture" id=3]
 [ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_walk1.png" type="Texture" id=4]
 [ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_idle.png" type="Texture" id=5]
+[ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_cheer1.png" type="Texture" id=6]
+[ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_cheer2.png" type="Texture" id=7]
+[ext_resource path="res://assets/kenney_platformercharacters/PNG/Player/Poses/player_duck.png" type="Texture" id=8]
+[ext_resource path="res://assets/memes/goku teleport.mp3" type="AudioStream" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 29, 47.5 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ) ],
+"frames": [ ExtResource( 8 ) ],
 "loop": true,
-"name": "Running",
+"name": "crouch",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 5 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": false,
+"name": "double_jump",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "jump",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "run",
+"speed": 15.0
 } ]
 
 [node name="Root" type="Node2D"]
@@ -52,3 +71,7 @@ shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Player"]
 frames = SubResource( 2 )
+animation = "crouch"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource( 9 )

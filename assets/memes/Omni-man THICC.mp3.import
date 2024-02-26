@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Omni-man THICC.mp3-c559fb2651b926ac16cf3395396dc1d3.mp3str"
+
+[deps]
+
+source_file="res://assets/memes/Omni-man THICC.mp3"
+dest_files=[ "res://.import/Omni-man THICC.mp3-c559fb2651b926ac16cf3395396dc1d3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

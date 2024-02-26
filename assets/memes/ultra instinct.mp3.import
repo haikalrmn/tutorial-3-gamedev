@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/ultra instinct.mp3-b6446dee1a1cf2fae8742c77e692f7fc.mp3str"
+
+[deps]
+
+source_file="res://assets/memes/ultra instinct.mp3"
+dest_files=[ "res://.import/ultra instinct.mp3-b6446dee1a1cf2fae8742c77e692f7fc.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
