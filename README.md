@@ -36,4 +36,4 @@ Implementasi *physics* dilakukan kurang lebih sama dengan apa yang dicontohkan o
 
 # Latihan: Implementasi Sound Effect
 ![Implementasi Sound Effect](./markdown-assets/audio.png)<br>
-Implementasi Sound Effect dilakukan dengan menambahkan objek `AudioStreamPlayer`.
+Implementasi Sound Effect dilakukan dengan menambahkan objek `AudioStreamPlayer` (audio merata, bukan audio *spatial*). Audio ini hanya  diimplementasikan pada *dash*. Akan tetapi, implementasinya masih *bugged* di mana jika di-*spam* akan memainkan audio tersebut berulang-ulang tanpa henti.
