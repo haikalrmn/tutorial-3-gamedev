@@ -16,7 +16,7 @@ func _ready():
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-export (int) var speed = 400
+export (int) var speed = 300
 export (int) var dash_intensity = 7000
 export (int) var jump_speed = -600
 export (int) var GRAVITY = 1200
@@ -29,9 +29,16 @@ export (int) var dash_cd_timeout = DASH_COOLDOWN
 export       var last_key = ""
 export       var DEBUG = false
 export (int) var speed_multiplier = 1
+export (int) var climb_speed = 3
+
 
 var velocity = Vector2()
+var climbable = false
+var enemy = null
+var left_killable = false
+var right_killable = false
 
+				
 func get_input():
 	velocity.x = 0
 	var dash = 0
@@ -39,27 +46,37 @@ func get_input():
 		dash = dash_intensity
 		last_key = ""
 		dash_cd_timeout = DASH_COOLDOWN
+		$AudioStreamPlayer.play(0.96)
 		if DEBUG: print("just dashed, now cooldown " + str(dash_cd_timeout))
+		print(dash)
 		
 	if Input.is_action_just_pressed("right"):
 		last_key = "right"
 		dash_timeout = DASH_DELAY
-		$AudioStreamPlayer.play(0.96)
 		if DEBUG:print("last_key right, cd timeout " + str(dash_cd_timeout))
 
 	if Input.is_action_just_pressed("left"):
 		last_key = "left"
 		dash_timeout = DASH_DELAY
-		$AudioStreamPlayer.play(0.96)
 		if DEBUG: print("last_key left, cd timeout " + str(dash_cd_timeout))
-		
+	
 	if Input.is_action_pressed('right'):
-		velocity.x += (speed)*speed_multiplier + dash
 		$AnimatedSprite.flip_h = false
+		if right_killable and dash != 0:
+			print("kill!")
+			position.x = enemy.position.x + enemy.direction*50
+		else:
+			velocity.x += (speed)*speed_multiplier + dash
+		
 		
 	if Input.is_action_pressed('left'):
 		$AnimatedSprite.flip_h = true
-		velocity.x -= (speed)*speed_multiplier + dash
+		if left_killable and dash != 0:
+			print("kill!")
+			position.x = enemy.position.x + enemy.direction*50
+		else:
+			velocity.x -= (speed)*speed_multiplier + dash
+		
 	
 	if is_on_floor(): 
 		# running animation
@@ -84,6 +101,7 @@ func get_input():
 			$AnimatedSprite.play("jump")
 			if DEBUG: print('Current jump state is: ' + str(jump_state))
 		if !is_on_floor() and jump_state == 2: #jump_state makes sure they can only double jump once
+			GRAVITY = 1200 # to reset gravity at ladder
 			velocity.y = jump_speed
 			jump_state = 1
 			$AnimatedSprite.play("double_jump")
@@ -96,6 +114,21 @@ func get_input():
 		if DEBUG: print('Now crouching')
 	else:
 		speed_multiplier = 1
+	
+	#climb
+	if climbable:
+		if Input.is_action_just_pressed("up_ladder") or Input.is_action_just_pressed("down_ladder"):
+			velocity.y = 0
+			GRAVITY = 0
+			jump_state = 2 # can only jump one more time at ladder
+			
+		if Input.is_action_pressed("up_ladder"):
+			position.y -= climb_speed
+			if $AnimatedSprite.animation != "climb": $AnimatedSprite.play("climb")
+			
+		if Input.is_action_pressed("down_ladder"):
+			position.y += climb_speed
+			if $AnimatedSprite.animation != "climb": $AnimatedSprite.play("climb")
 		
 
 func _physics_process(delta):
@@ -104,3 +137,45 @@ func _physics_process(delta):
 	dash_cd_timeout -= delta
 	get_input()
 	velocity = move_and_slide(velocity, UP)
+
+
+func _on_Climbable_body_entered(body):
+	if (body.name == "Player" and body is KinematicBody2D):
+		climbable = true
+		
+
+
+func _on_Climbable_body_exited(body):
+	if (body.name == "Player" and body is KinematicBody2D):
+		print("keloar")
+		if is_on_floor(): $AnimatedSprite.play("run")
+		else: $AnimatedSprite.play("jump")
+		GRAVITY = 1200
+		climbable = false
+
+
+func _on_LeftKillCollision_body_entered(body):
+	if body.name == "Zombie" and body is KinematicBody2D:
+		enemy = body
+		left_killable = true
+		print("Right killable: " + str(left_killable))
+
+
+func _on_RightKillCollision_body_entered(body):
+	if body.name == "Zombie" and body is KinematicBody2D:
+		enemy = body
+		right_killable = true
+		print("Left killable: "+ str(right_killable))
+
+
+func _on_LeftKillCollision_body_exited(body):
+	if body.name == "Zombie" and body is KinematicBody2D:
+		enemy = body
+		left_killable = false
+	print("Left killable: "+ str(right_killable))
+
+func _on_RightKillCollision_body_exited(body):
+	if body.name == "Zombie" and body is KinematicBody2D:
+		enemy = body
+		right_killable = false
+	print("Right killable: " + str(left_killable))

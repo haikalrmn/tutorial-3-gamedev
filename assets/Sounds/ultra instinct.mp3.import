@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/ultra instinct.mp3-9f7652ad04308ffd1bed4ce56000b913.mp3str"
+
+[deps]
+
+source_file="res://assets/Sounds/ultra instinct.mp3"
+dest_files=[ "res://.import/ultra instinct.mp3-9f7652ad04308ffd1bed4ce56000b913.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

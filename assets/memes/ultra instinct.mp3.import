@@ -11,5 +11,5 @@ dest_files=[ "res://.import/ultra instinct.mp3-b6446dee1a1cf2fae8742c77e692f7fc.
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

@@ -11,5 +11,5 @@ dest_files=[ "res://.import/goku teleport.mp3-0e9706c6eca5a2fc79cc6b5985811ef0.m
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
